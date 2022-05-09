@@ -18,9 +18,24 @@ int main(int argc, char *str[]) {
             puts ("          ``'\"`");
         }
 
-    //    else if (!strcmp(str, "-h"))
+        else if (!strcmp(str[1], "-h")){
+            puts ("  ,-\"=-.");
+            puts (" .       \\");
+            puts (" \"='\"=\\   '");
+            puts (" `@] @'|   )");
+            puts (" ) ` ' ),-`");
+            puts ("  \\^_,  ,  ");
+            puts ("    ,(\\,/ )`-.");
+        }
 
-    //    else if (!strcmp(str, "-c"))
+        else if (!strcmp(str[1], "-c")){
+            puts ("    _______");
+            puts ("   /______/\"=,");
+            puts ("  [     | \"=, \"=,,");
+            puts ("  [-----+----\"=,* )");
+            puts ("  (_---_____---_)/");
+            puts ("    (O)     (O)");
+        }
         
     }
 
@@ -32,14 +47,6 @@ int main(int argc, char *str[]) {
 /*
 
 
-
-      ,-"=-.
-     .       \
-     "='"=\   '
-     `@] @'|   )
-     ) ` ' ),-`
-      \^_,  \,  
-        ,(\,/ )`-.
 
 
 
