@@ -42,30 +42,3 @@ int main(int argc, char *str[]) {
     else printf("Undefined Expression\n");
     return 0;
 }
-
-
-/*
-
-
-
-
-
-        puts ("");
-        puts ("");
-        puts ("");
-        puts ("");
-        puts ("");
-        puts ("");
-        puts ("");
-        puts ("");
-        puts ("");
-        puts ("");
-        puts ("");
-        puts ("");
-        puts ("");
-        puts ("");
-        puts ("");
-
-
-
-*/
