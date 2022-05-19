@@ -37,6 +37,7 @@ int main(int argc, char *str[]) {
             puts ("    (O)     (O)");
         }
         
+        else printf("Undefined Expression\n");
     }
 
     else printf("Undefined Expression\n");
