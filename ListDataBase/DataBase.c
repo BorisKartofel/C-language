@@ -1,42 +1,50 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
+
+
+//Variable that keeps the size of LinkedList
+int list_size = 0;
+
 
 //Declaration of the LinkedList structure
-typedef struct DataBaseList{
+typedef struct LinkedList{
 
-    int index; 
-    char *Value; // Let it be 10 chars
+    char *Value; // Let it be 6 chars
 
-    struct DataBaseList *next;
-} list;
+    struct LinkedList *next;
+} list;     
+
 
 //Creates an element (node) of LinkedList
-list *create_node(int set_index, char *set_value){
+list *create_node(char *set_value){
 
     list *node = (list *)malloc(sizeof(list));
 
-    node -> index = set_index;
     node -> Value = set_value;
     node -> next = NULL;
     
+    list_size++;
     return node;
 }
 
-//Inserts forward
-void insert_fwd(list **db, int set_index, char *set_value){
 
-    list *new_element = create_node(set_index, set_value);
+//Inserts forwards
+void insert_fwd(list **db, char *set_value){
+
+    list *new_element = create_node(set_value);
 
     new_element -> next = *db;
     *db = new_element;
 }
 
+
 //Inserts backwards
-void insert_bkwd(list **db, int set_index, char *set_value){
+void insert_bkwd(list **db, char *set_value){
 
-    list *new_element = create_node(set_index, set_value);
-
+    list *new_element = create_node(set_value);
     list *temp = *db;
+
     while(temp -> next != NULL){
         temp = temp -> next;
     }
@@ -44,37 +52,97 @@ void insert_bkwd(list **db, int set_index, char *set_value){
     temp -> next = new_element;
 }
 
-//Finds and prints Values of LinkedList elements by their index
-void database_read(list *db, int id){
 
-    int counter = 0; //This counter uses for printing Error in case there was no matching index
+//Inserts node in the middle of LinkedList
+void insert_mdl(list **db, int id, char *set_value){
 
-    while((db != NULL) && (db -> index <= id)){
-        if((db -> index) == id){
-            printf("%s\n", db -> Value);
+    //Inner variable for while cycle
+    int i = 0;
+    //Inner checkout
+    bool is_alone = true;
+
+    list *temp = *db;
+    
+    while (temp -> next != NULL && i <= id  &&  is_alone){
+
+        if (i == id - 1){
+
+            is_alone = false;
+            list *new_element = create_node(set_value);
+            new_element -> next = temp -> next;
+            temp -> next = new_element;
         }
-    db = db -> next;
+
+        i++;
+        temp = temp -> next;
+    }
+}
+/*
+//Finds and prints Values of LinkedList elements by their index
+void database_read(list **db, int id){
+
+    //This counter uses for printing Error in case there was no matching index.
+    //Counter is true if there is such index in list
+    bool counter = false;
+
+    for(int i = 0; (db != NULL) && (i <= id); i++){
+
+        if(i == id) {
+
+            printf("%s\n", db -> Value);
+            db = db -> next;
+            counter = true;
+        }
     }
 
-    if(counter == 0) puts ("NoSuchIndexException");
+    if(counter) puts ("NoSuchIndexException");
 }
+*/
+
+void database_insert(list *db, int id, char *set_value){
+
+    //Boolead variable. True if there's at least one element in list
+    bool not_null = (db != NULL);
+
+    if(id < 0 && not_null){
+        insert_bkwd(&db, set_value);
+    }
+
+    else if(id > list_size && not_null){
+        insert_fwd(&db, set_value);
+    }
+
+    else if(not_null){
+        insert_mdl(&db, id, set_value);
+    }
+
+    else  puts("ListNotCreatedException");
+}
+
 
 int main(){
 
-    list *db = create_node(0, "Name");
+    list *db = create_node("Name");
 
-    insert_fwd(&db, -1, "Anton");
-    insert_fwd(&db, 1, "Aaaaa");
-    insert_fwd(&db, -1, "Atttt");
+    insert_bkwd(&db, "Fjjjj");
+    insert_bkwd(&db, "Frrrr");
 
-    insert_bkwd(&db, 2, "Fjjjj");
-    insert_bkwd(&db, 2, "Foooo");
-    insert_bkwd(&db, 0, "Frrrr");
+    insert_fwd(&db, "Aaaaa");
+    insert_fwd(&db, "Atttt");
+    insert_fwd(&db, "OOOOOO");
 
-    database_read(db, 2);
+    insert_mdl(&db, 4, "MIDDLE");
+    insert_mdl(&db, 1, "MIDDLE");
+
+    database_insert(db, -3, "BCKWDS");
+    database_insert(db, -400000, "BCKWDS");
+    !!! database_insert(db, 642052, "FRWRDS");
+    database_insert(db, 2, "MIDDLE");
+
+//    database_read(&db, 2);
 
     while (db != NULL){
-        printf("index is %d, value is %s.\n", db -> index, db -> Value);
+        printf("Value is %s.\n", db -> Value);
         db = db -> next;
     }
 
