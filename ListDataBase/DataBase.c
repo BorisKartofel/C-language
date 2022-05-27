@@ -25,6 +25,8 @@ list *create_node(char *set_value){
     node -> next = NULL;
     
     list_size++;
+
+    printf("Узелков у нас %d\n", list_size);
     return node;
 }
 
@@ -97,26 +99,36 @@ void database_read(list **db, int id){
 
     if(counter) puts ("NoSuchIndexException");
 }
+
+
+void database_delete(list **db, int id){
+
+    int counter = 0;
+
+    while (db != NULL  &&  counter < id){
+        
+
+        db = db -> next;
+        counter++;
+    }
+}
 */
 
 void database_insert(list *db, int id, char *set_value){
 
-    //Boolead variable. True if there's at least one element in list
-    bool not_null = (db != NULL);
-
-    if(id < 0 && not_null){
-        insert_bkwd(&db, set_value);
+    if(db == NULL){
+        puts("ListNotCreatedException");
     }
 
-    else if(id > list_size && not_null){
+    else if(id <= 0){
         insert_fwd(&db, set_value);
     }
 
-    else if(not_null){
-        insert_mdl(&db, id, set_value);
+    else if(id >= list_size){
+        insert_bkwd(&db, set_value);
     }
 
-    else  puts("ListNotCreatedException");
+    else insert_mdl(&db, id, set_value);
 }
 
 
@@ -126,21 +138,28 @@ int main(){
 
     insert_bkwd(&db, "Fjjjj");
     insert_bkwd(&db, "Frrrr");
-
     insert_fwd(&db, "Aaaaa");
     insert_fwd(&db, "Atttt");
-    insert_fwd(&db, "OOOOOO");
-
+    database_insert(db, -400000, "FRWRDS");
     insert_mdl(&db, 4, "MIDDLE");
     insert_mdl(&db, 1, "MIDDLE");
+    database_insert(db, -400000, "FRWRDS");
+    insert_fwd(&db, "FRONT");
+    insert_fwd(&db, "FRONT");
+    insert_fwd(&db, "FRONT");
+    insert_bkwd(&db, "BACK");
+    database_insert(db, -400000, "FRWRDS");
+    insert_bkwd(&db, "BACK");
+    insert_bkwd(&db, "BACK");
 
-    database_insert(db, -3, "BCKWDS");
-    database_insert(db, -400000, "BCKWDS");
-    !!! database_insert(db, 642052, "FRWRDS");
+    database_insert(db, -3, "FRWRDS");  //ПО КАКОЙ-ТО ПРИЧИНЕ ВСТАВКА В НАЧАЛО СПИСКА НЕ РАБОТАЕТ. В ФУНКЦИЮ ЗАХОДИТ, УЗЕЛ СОЗДАЕТСЯ, НО ПОЛУЧИТЬ ЕГО Я НЕ МОГУ!!!
+    database_insert(db, -400000, "FRWRDS");
+    database_insert(db, 642052, "BCWDS");
+    database_insert(db, -400000, "FRWRDS");
     database_insert(db, 2, "MIDDLE");
+    database_insert(db, -400000, "FRWRDS");
 
-//    database_read(&db, 2);
-
+    
     while (db != NULL){
         printf("Value is %s.\n", db -> Value);
         db = db -> next;
