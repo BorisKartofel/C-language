@@ -6,13 +6,14 @@
 struct LinkedListNode
 {
     struct LinkedListNode *pNext;
-    int                value;
+    int                    index;
+    char                  *value;
 };
 
 typedef struct
 {
     struct LinkedListNode *pHead;
-    unsigned           size;
+    unsigned               size;
 }LinkedList;
 
 typedef int(*db_pfsort)(int, int);
@@ -60,62 +61,64 @@ int db_is_empty(LinkedList *);
 
 /*
                               +---------+
-                              |  value  |
-                              +---------+
+                              |  index
+                          |
+    value;      +---------+
                               |         |
                               +---------+
 +---------+    +---------+
-|  value  |    |  value  |
-+---------+ .->+---------+
+|  inde  |    |  inde  |
++-value;---+ .->+value;----+
 |  pNext  |-.  |   NULL  |
 +---------+    +---------+
 after append
                                +---------+
-                               |  value  |
-                            .->+---------+
+                               |  index
+                          |
+    value;    .->+---------+
                             |  |   NULL  |
                             |  +---------+
 +---------+    +---------+  |
-|  value  |    |  value  |  |
-+---------+ .->+---------+  |
+|  inde  |    |  inde  |  |
++-value;---+ .->+value;----+  |
 |  pNext  |-.  |   pNext |--.
 +---------+    +---------+
 */
-struct LinkedListNode * db_insert_at_end(LinkedList *, int);
+struct LinkedListNode * db_insert_at_end(LinkedList *, int, char *);
 
 /*
                  +---------+
-                 |  value  |
-                 +---------+
+                 |  index
+              value;     +---------+
                  |         |
                  +---------+
 +---------+      +---------+      +---------+
-|  value  |      |  value  |      |  value  |
-+---------+  .-->+---------+  .-->+---------+
+|  inde  |      |  inde  |      |  inde  |
++-value;---+  .-->+value;----+  .-->value;-----+
 |  pNext  |--.   |  pNext  |--.   |   NULL  |
 +---------+      +---------+      +---------+
 after insert (insert after index or pointer)
                  +---------+
-                 |  value  |
-            .--->+---------+
+                 |  index
+              value;.--->+---------+
             |    |  pNext  |--.
             |    +---------+  |
             |                 |
             |  .--------------.
 +---------+ |  |  +---------+      +---------+
-|  value  | |  |  |  value  |      |  value  |
-+---------+ |  .->+---------+  .-->+---------+
+|  inde  | |  |  |  inde  |      |  inde  |
++-value;---+ |  .->+value;----+  .-->value;-----+
 |  pNext  |-.     |  pNext  |--.   |   NULL  |
 +---------+       +---------+      +---------+
 */
-struct LinkedListNode * db_insert_at_begin(LinkedList *, int);
-struct LinkedListNode * db_insert_by_index(LinkedList *, unsigned, int);
-struct LinkedListNode * db_insert_by_pointer(LinkedList *, struct LinkedListNode *, int);
+struct LinkedListNode * db_insert_at_begin(LinkedList *, int, char*);
+struct LinkedListNode * db_insert_by_index(LinkedList *, unsigned, int, char*);
+struct LinkedListNode * db_insert_by_pointer(LinkedList *, struct LinkedListNode *, int, char*);
 
 /*
 +---------+      +---------+      +---------+
-|  value  |      |  value  |      |  value  |
-+---------+  .-->+---------+  .-->+---------+
+|  inde  |      |  inde  |      |  inde  |
++-value;---+  .-->+value;----+  .-->value;-----+
 |  pNext  |--.   |  pNext  |--.   |   NULL  |
 +---------+      +---------+      +---------+
 after remove
@@ -123,8 +126,8 @@ free(first)
 pHead = -----.
              |
 +---------+  |   +---------+      +---------+
-| REMOVED |  |   |  value  |      |  value  |
-+---------+  .-->+---------+  .-->+---------+
+| REMOVED |  |   |  inde  |      |  inde  |
++---------+  .-->+-value;---+  .-->+value;----+
 | REMOVED |      |  pNext  |--.   |   NULL  |
 +---------+      +---------+      +---------+
 */
@@ -132,15 +135,15 @@ struct LinkedListNode * db_remove_first(LinkedList *);
 
 /*
 +---------+      +---------+      +---------+
-|  value  |      |  value  |      |  value  |
-+---------+  .-->+---------+  .-->+---------+
+|  inde  |      |  inde  |      |  inde  |
++-value;---+  .-->+value;----+  .-->value;-----+
 |  pNext  |--.   |  pNext  |--.   |   NULL  |
 +---------+      +---------+      +---------+
 after remove
 free(last)
 +---------+     +---------+    +---------+
-|  value  |     |  value  |    | REMOVED |
-+---------+  .->+---------+    +---------+
+|  inde  |     |  inde  |    | REMOVED |
++-value;---+  .->+value;----+    +---------+
 |  pNext  |--.  |   NULL  |    | REMOVED |
 +---------+     +---------+    +---------+
 */
@@ -148,28 +151,28 @@ struct LinkedListNode * db_remove_last(LinkedList *);
 
 /*
 +---------+      +---------+      +---------+
-|  value  |      |  value  |      |  value  |
-+---------+  .-->+---------+  .-->+---------+
+|  inde  |      |  inde  |      |  inde  |
++-value;---+  .-->+value;----+  .-->value;-----+
 |  pNext  |--.   |  pNext  |--.   |   NULL  |
 +---------+      +---------+      +---------+
 after remove (remove by index or pointer)
              .---------------.
 +---------+  |  +---------+  |  +---------+
-|  value  |  |  | REMOVED |  |  |  value  |
-+---------+  |  +---------+  .->+---------+
+|  inde  |  |  | REMOVED |  |  |  inde  |
++-value;---+  |  +---------+  .->+value;----+
 |  pNext  |--.  | REMOVED |     |   NULL  |
 +---------+     +---------+     +---------+
 */
 struct LinkedListNode * db_remove_by_index(LinkedList *, unsigned);
 struct LinkedListNode * db_remove_by_pointer(LinkedList *, struct LinkedListNode *);
 
-struct LinkedListNode * db_find(LinkedList *, int);
+struct LinkedListNode * db_find_by_inner_index(LinkedList *, int);
 
 struct LinkedListNode *db_first(LinkedList *);
 struct LinkedListNode *db_last(LinkedList *);
 struct LinkedListNode *db_next(struct LinkedListNode *);
 
-void db_sort(LinkedList *);
+void db_bubble_sort(LinkedList *);
 void db_sort_custom(LinkedList *, db_pfsort);
 
 void db_print(LinkedList *);
