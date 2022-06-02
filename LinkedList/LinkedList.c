@@ -16,13 +16,14 @@ struct LinkedListNode * _get_new_node(int aIndex, char *aValue)
     return res;
 }
 
-//------------------------------------------------------------------------------
+
 void db_init(LinkedList *apList)
 {
     apList->pHead = NULL;
     apList->size  = 0;
 }
-//------------------------------------------------------------------------------
+
+
 void db_free(LinkedList *apList)
 {
     struct LinkedListNode *next = apList->pHead;
@@ -36,13 +37,15 @@ void db_free(LinkedList *apList)
     apList->pHead = NULL;
     apList->size  = 0;
 }
-//------------------------------------------------------------------------------
+
+
 int db_is_empty(LinkedList *apList)
 {
     return (apList->pHead == NULL);
 }
-//------------------------------------------------------------------------------
-struct LinkedListNode * db_insert_at_end(LinkedList *apList, int aIndex, char* aValue)
+
+
+struct LinkedListNode * db_insert_at_end(LinkedList *apList, int aIndex, char *aValue)
 {
     struct LinkedListNode *next = apList->pHead;
     if (next == NULL)
@@ -59,7 +62,8 @@ struct LinkedListNode * db_insert_at_end(LinkedList *apList, int aIndex, char* a
     apList->size++;
     return next->pNext;
 }
-//------------------------------------------------------------------------------
+
+
 struct LinkedListNode * db_insert_at_begin(LinkedList *apList, int aIndex, char* aValue)
 {
     if (apList->pHead == NULL)
@@ -76,7 +80,8 @@ struct LinkedListNode * db_insert_at_begin(LinkedList *apList, int aIndex, char*
     apList->size++;
     return new_element;
 }
-//------------------------------------------------------------------------------
+
+
 struct LinkedListNode * db_insert_by_index(LinkedList *apList, unsigned aIndex, int index, char* aValue)
 {
     if (aIndex >= apList->size)
@@ -97,10 +102,10 @@ struct LinkedListNode * db_insert_by_index(LinkedList *apList, unsigned aIndex, 
     apList->size++;
     return new_element;
 }
-//------------------------------------------------------------------------------
+
+
 struct LinkedListNode * db_insert_by_pointer(LinkedList *apList, struct LinkedListNode *apNode, int aIndex, char* aValue)
 {
-    unsigned i = 0;
     struct LinkedListNode *current;
     struct LinkedListNode *next;
     struct LinkedListNode *new_element;
@@ -113,7 +118,8 @@ struct LinkedListNode * db_insert_by_pointer(LinkedList *apList, struct LinkedLi
     apList->size++;
     return new_element;
 }
-//------------------------------------------------------------------------------
+
+
 struct LinkedListNode * db_remove_first(LinkedList *apList)
 {
     if (apList->pHead == NULL)
@@ -126,7 +132,8 @@ struct LinkedListNode * db_remove_first(LinkedList *apList)
     apList->size--;
     return apList->pHead;
 }
-//------------------------------------------------------------------------------
+
+
 struct LinkedListNode * db_remove_last(LinkedList *apList)
 {
     if (apList->pHead == NULL)
@@ -152,7 +159,8 @@ struct LinkedListNode * db_remove_last(LinkedList *apList)
 
     return NULL;
 }
-//------------------------------------------------------------------------------
+
+
 struct LinkedListNode * db_remove_by_index(LinkedList *apList, unsigned aIndex)
 {
     if (aIndex >= apList->size)
@@ -181,7 +189,8 @@ struct LinkedListNode * db_remove_by_index(LinkedList *apList, unsigned aIndex)
     apList->size--;
     return prev->pNext;
 }
-//------------------------------------------------------------------------------
+
+
 struct LinkedListNode * db_remove_by_pointer(LinkedList *apList, struct LinkedListNode *apNode)
 {
     if (apNode == NULL || apList->size == 0)
@@ -198,7 +207,8 @@ struct LinkedListNode * db_remove_by_pointer(LinkedList *apList, struct LinkedLi
 
     return db_remove_by_index(apList, i);
 }
-//------------------------------------------------------------------------------
+
+
 struct LinkedListNode * db_find_by_inner_index(LinkedList *apList, int aIndex)
 {
     struct LinkedListNode *cur = apList->pHead;
@@ -213,7 +223,8 @@ struct LinkedListNode * db_find_by_inner_index(LinkedList *apList, int aIndex)
     }
     return NULL;
 }
-//------------------------------------------------------------------------------
+
+
 struct LinkedListNode * db_find_by_inner_value(LinkedList *apList, char* aValue)
 {
     struct LinkedListNode *cur = apList->pHead;
@@ -228,12 +239,14 @@ struct LinkedListNode * db_find_by_inner_value(LinkedList *apList, char* aValue)
     }
     return NULL;
 }
-//------------------------------------------------------------------------------
+
+
 struct LinkedListNode *db_first(LinkedList *apList)
 {
     return apList->pHead;
 }
-//------------------------------------------------------------------------------
+
+
 struct LinkedListNode *db_last(LinkedList *apList)
 {
     struct LinkedListNode *next = apList->pHead;
@@ -241,7 +254,8 @@ struct LinkedListNode *db_last(LinkedList *apList)
         next = next->pNext;
     return next;
 }
-//------------------------------------------------------------------------------
+
+
 struct LinkedListNode *db_next(struct LinkedListNode *apNode)
 {
     if (apNode == NULL)
@@ -251,7 +265,8 @@ struct LinkedListNode *db_next(struct LinkedListNode *apNode)
         return apNode->pNext;
     return NULL;
 }
-//------------------------------------------------------------------------------
+
+
 void db_bubble_sort(LinkedList *apList)
 {
     struct LinkedListNode *i;
@@ -274,7 +289,7 @@ void db_bubble_sort(LinkedList *apList)
             i = i->pNext;
     }
 }
-//------------------------------------------------------------------------------
+
 
 //It's the same as bubble sort for now
 void db_sort_custom(LinkedList *apList, db_pfsort apfSort)
@@ -300,7 +315,6 @@ void db_sort_custom(LinkedList *apList, db_pfsort apfSort)
     }
 }
 
-//------------------------------------------------------------------------------
 
 void db_print(LinkedList *apList)
 {
@@ -313,6 +327,55 @@ void db_print(LinkedList *apList)
     printf("\n");
 }
 
+
+int db_put_file(LinkedList *apList)
+{
+    struct LinkedListNode *next = apList->pHead;
+    char * ListFile = "/home/anton/HomeworkC/LinkedList/ListFile.txt";
+    FILE *file;
+    
+    if((file = fopen(ListFile, "w"))==NULL)
+    {
+        perror("Error occured while opening file");
+        return 1;
+    }
+
+    while(next)
+    {
+    
+    fprintf(file, "Index is %i. Value is %s.\n", next->index, next->value);
+    next = next->pNext;
+    }
+
+    fclose(file);
+    return 0;
+}
+
+
+int db_scan_file(LinkedList *apList)
+{
+    struct LinkedListNode *next = apList->pHead;
+    char * ListFile = "/home/anton/HomeworkC/LinkedList/ListFile.txt";
+    char string[48];
+    FILE *file;
+
+    if((file = fopen(ListFile, "r"))==NULL)
+    {
+        perror("Error occured while opening file");
+        return 1;
+    }
+
+    while((fgets(string, 48, file))!=NULL)
+    {
+        printf("%s", string);
+    }
+
+    fclose(file);
+    return 0;
+
+}
+
+
 int main(){
 
     LinkedList List;
@@ -320,15 +383,24 @@ int main(){
     
     srand(time(NULL));  
 
-   
-
-    for(int i = 0; i < 100; ++i)
-    {   
-        char string[10] = {0};
-        for(int i = 0; i < 9; ++i) string[i] = rand()%26+'A';
-        db_insert_at_end(&List, rand(), string);
-        puts(string);
-    }    
+    //An array with random strings
+    char string[10][10] = {};
+    for(int i = 0; i < 10; i++) 
+    {
+        string[i][9]= '\0';
+        for(int j = 0; j < 9; j++)
+        {
+            string[i][j] = rand()%26+'A';
+        }
+        
+    }
     
-    db_print(&List);
+    for(int i = 0; i < 500000; ++i)
+    {
+        db_insert_at_begin(&List, rand(), string[rand()%9]);
+    }    
+
+    
+    db_put_file(&List);
+    db_scan_file(&List);
 }

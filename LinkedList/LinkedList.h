@@ -34,6 +34,8 @@ struct LinkedListNode *db_find(LinkedList *, int);
 struct LinkedListNode *db_first(LinkedList *);
 struct LinkedListNode *db_last(LinkedList *);
 struct LinkedListNode *db_next(struct LinkedListNode *);
+int    db_put_file(LinkedList *apList);
+int    db_scan_file(LinkedList *apList)
 void   db_print(LinkedList *);
 */
 
@@ -84,7 +86,7 @@ after append
 |  pNext  |-.  |   pNext |--.
 +---------+    +---------+
 */
-struct LinkedListNode * db_insert_at_end(LinkedList *, int, char *);
+struct LinkedListNode * db_insert_at_end(LinkedList *, int, char*);
 
 /*
                  +---------+
