@@ -291,31 +291,6 @@ void db_bubble_sort(LinkedList *apList)
 }
 
 
-//It's the same as bubble sort for now
-void db_sort_custom(LinkedList *apList, db_pfsort apfSort)
-{
-    struct LinkedListNode *i;
-    struct LinkedListNode *j;
-
-    i = apList->pHead;
-    while (i)
-    {
-        for (j = i->pNext; j && apfSort(i->index, j->index); j = j->pNext)
-            ;
-
-        if (j != NULL)
-        {
-            int tmp;
-            tmp = j->index;
-            j->index = i->index;
-            i->index = tmp;
-        }
-        else
-            i = i->pNext;
-    }
-}
-
-
 void db_print(LinkedList *apList)
 {
     struct LinkedListNode *next = apList->pHead;
@@ -354,7 +329,6 @@ int db_put_file(LinkedList *apList)
 
 int db_scan_file(LinkedList *apList)
 {
-    struct LinkedListNode *next = apList->pHead;
     char * ListFile = "/home/anton/HomeworkC/LinkedList/ListFile.txt";
     char string[48];
     FILE *file;
@@ -373,6 +347,12 @@ int db_scan_file(LinkedList *apList)
     fclose(file);
     return 0;
 
+}
+
+
+int db_get_size(LinkedList *apList)
+{
+    return apList->size;
 }
 
 
@@ -395,12 +375,13 @@ int main(){
         
     }
     
-    for(int i = 0; i < 500000; ++i)
+    for(int i = 0; i < 200000; ++i)
     {
         db_insert_at_begin(&List, rand(), string[rand()%9]);
+        db_insert_at_end(&List, rand(), string[rand()%9]);
     }    
 
-    
     db_put_file(&List);
     db_scan_file(&List);
+    printf("%d\n", db_get_size(&List));
 }
