@@ -355,7 +355,7 @@ int db_get_size(LinkedList *apList)
     return apList->size;
 }
 
-
+/*
 int main(){
 
     LinkedList List;
@@ -375,13 +375,14 @@ int main(){
         
     }
     
-    for(int i = 0; i < 200000; ++i)
+    for(int i = 0; i < 5000; ++i)
     {
         db_insert_at_begin(&List, rand(), string[rand()%9]);
         db_insert_at_end(&List, rand(), string[rand()%9]);
-    }    
+    }
 
     db_put_file(&List);
     db_scan_file(&List);
     printf("%d\n", db_get_size(&List));
 }
+*/
