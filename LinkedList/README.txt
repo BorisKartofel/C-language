@@ -1,4 +1,4 @@
-List of all funcions you can interact with:
+Список всех функций, с помощью которых вы будете взаимодействовать со связным списком:
 
 db_init(LinkedList *);
 db_free(LinkedList *);
